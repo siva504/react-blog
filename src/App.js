@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import PostsList from './PostsList';
+import SinglePost from './SinglePost';
+import Favorites from './Favorites';
+import Header from './Header';
 
 function App() {
+  const [favorites, setFavorites] = useState([]);
+  const theme = createTheme();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div>
+          <Header favoritesCount={favorites.length} />
+          <Routes>
+            <Route
+              path="/"
+              element={<PostsList favorites={favorites} setFavorites={setFavorites} />}
+            />
+            <Route
+              path="/post/:id"
+              element={<SinglePost favorites={favorites} setFavorites={setFavorites} />}
+            />
+            <Route
+              path="/favorites"
+              element={<Favorites favorites={favorites} />}
+            />
+          </Routes>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
