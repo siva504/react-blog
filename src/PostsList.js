@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import Pagination from '@material-ui/lab/Pagination';
-import { useStyles } from './styles';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Pagination from "@material-ui/lab/Pagination";
+import { useStyles } from "./styles";
 
 function PostsList({ favorites, setFavorites }) {
   const classes = useStyles();
@@ -10,18 +10,21 @@ function PostsList({ favorites, setFavorites }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   //data api added
+  //use axios api for fetching the data
   useEffect(() => {
-    axios.get(`https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=10`)
-      .then(response => {
+    axios
+      .get(`https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=10`)
+      .then((response) => {
         setPosts(response.data);
-        setTotalPages(Math.ceil(response.headers['x-total-count'] / 10));
+        setTotalPages(Math.ceil(response.headers["x-total-count"] / 10));
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   }, [page]);
 
-  
   const addToFavorites = (postId) => {
-    const isAlreadyFavorite = favorites.some(favorite => favorite.id === postId);
+    const isAlreadyFavorite = favorites.some(
+      (favorite) => favorite.id === postId
+    );
 
     if (!isAlreadyFavorite) {
       setFavorites([...favorites, { id: postId }]);
@@ -35,16 +38,26 @@ function PostsList({ favorites, setFavorites }) {
   return (
     <div className={classes.container}>
       <h1>Posts</h1>
-      {posts.map(post => (
+      {posts.map((post) => (
         <div key={post.id} className={classes.postContainer}>
           <Link to={`/post/${post.id}`}>
             <h2>{post.title}</h2>
           </Link>
           <p>{post.body}</p>
-          <button className={classes.addToFavoritesButton} onClick={() => addToFavorites(post.id)}>Add to Favorites</button>
+          <button
+            className={classes.addToFavoritesButton}
+            onClick={() => addToFavorites(post.id)}
+          >
+            Add to Favorites
+          </button>
         </div>
       ))}
-      <Pagination count={totalPages} page={page} onChange={handlePageChange} color="primary"/>
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={handlePageChange}
+        color="primary"
+      />
     </div>
   );
 }
