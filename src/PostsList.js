@@ -9,7 +9,7 @@ function PostsList({ favorites, setFavorites }) {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  //data api added
   useEffect(() => {
     axios.get(`https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=10`)
       .then(response => {
